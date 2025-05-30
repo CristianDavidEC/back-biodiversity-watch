@@ -24,12 +24,32 @@ public class ProfileService extends SupabaseService {
 
     public ResponseEntity<Profile> getProfileById(String authToken, String id) {
         HttpHeaders headers = createHeaders(authToken);
-        return executeRequest(PROFILES_ENDPOINT + "?id=eq." + id, HttpMethod.GET, headers, null, Profile.class);
+        ResponseEntity<List<Profile>> response = restTemplate.exchange(
+                supabaseConfig.getSupabaseUrl() + PROFILES_ENDPOINT + "?id=eq." + id,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<Profile>>() {
+                });
+
+        if (response.getBody() != null && !response.getBody().isEmpty()) {
+            return ResponseEntity.ok(response.getBody().get(0));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Profile> getProfileByEmail(String authToken, String email) {
         HttpHeaders headers = createHeaders(authToken);
-        return executeRequest(PROFILES_ENDPOINT + "?email=eq." + email, HttpMethod.GET, headers, null, Profile.class);
+        ResponseEntity<List<Profile>> response = restTemplate.exchange(
+                supabaseConfig.getSupabaseUrl() + PROFILES_ENDPOINT + "?email=eq." + email,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<Profile>>() {
+                });
+
+        if (response.getBody() != null && !response.getBody().isEmpty()) {
+            return ResponseEntity.ok(response.getBody().get(0));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Profile> createProfile(String authToken, Profile profile) {
