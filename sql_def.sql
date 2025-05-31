@@ -168,3 +168,13 @@ CREATE TRIGGER on_auth_user_created_create_profile
   AFTER INSERT ON auth.users
   FOR EACH ROW
   EXECUTE PROCEDURE public.handle_new_user_profile();
+
+
+-- Primero, eliminar la restricción existente
+ALTER TABLE public.observations DROP CONSTRAINT observations_id_specie_fkey;
+
+-- Luego, agregar la nueva restricción que permite NULL
+ALTER TABLE public.observations ADD CONSTRAINT observations_id_specie_fkey 
+    FOREIGN KEY (id_specie) REFERENCES public.species(id_specie) 
+    ON DELETE SET NULL 
+    ON UPDATE CASCADE;

@@ -20,6 +20,7 @@ public class SupabaseService {
         headers.set("Authorization", authToken);
         headers.set("apikey", supabaseConfig.getSupabaseAnonKey());
         headers.set("Content-Type", "application/json");
+        headers.set("Prefer", "return=representation");
         return headers;
     }
 
