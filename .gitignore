@@ -22,3 +22,29 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Python
+venv/
+.env/
+.venv/
+env/
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de Jupyter Notebook temporales
+.ipynb_checkpoints/
+
+# Archivos de configuración de VSCode y otros editores
+.vscode/
+.idea/
+
+# Modelos y datos generados
+ml_model/model/data/*
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
