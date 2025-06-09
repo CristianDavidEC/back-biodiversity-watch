@@ -22,22 +22,35 @@ public class ObservationController {
 
     @GetMapping
     public ResponseEntity<List<Observation>> getAllObservations(@RequestHeader("Authorization") String authToken) {
-        return observationService.getAllObservations(authToken);
+        logger.info("Solicitud recibida para obtener todas las observaciones");
+        ResponseEntity<List<Observation>> response = observationService.getAllObservations(authToken);
+        logger.info("Se encontraron {} observaciones", response.getBody() != null ? response.getBody().size() : 0);
+        return response;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Observation> getObservationById(@RequestHeader("Authorization") String authToken,
             @PathVariable String id) {
+        logger.info("Solicitud recibida para obtener observación con ID: {}", id);
         ResponseEntity<List<Observation>> response = observationService.getObservationById(authToken, id);
         Observation obs = response.getBody() != null && !response.getBody().isEmpty() ? response.getBody().get(0)
                 : null;
+        if (obs != null) {
+            logger.info("Observación encontrada con ID: {}", id);
+        } else {
+            logger.info("No se encontró observación con ID: {}", id);
+        }
         return ResponseEntity.status(response.getStatusCode()).body(obs);
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Observation>> getObservationsByUserId(@RequestHeader("Authorization") String authToken,
             @PathVariable String userId) {
-        return observationService.getObservationsByUserId(authToken, userId);
+        logger.info("Solicitud recibida para obtener observaciones del usuario con ID: {}", userId);
+        ResponseEntity<List<Observation>> response = observationService.getObservationsByUserId(authToken, userId);
+        logger.info("Se encontraron {} observaciones para el usuario {}",
+                response.getBody() != null ? response.getBody().size() : 0, userId);
+        return response;
     }
 
     @PostMapping
