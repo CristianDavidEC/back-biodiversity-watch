@@ -1,6 +1,7 @@
 package com.biodiversity.demo.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +35,11 @@ public class Observation {
     @Nullable
     @JsonProperty("state")
     private String state;
+
+    @Nullable
+    @JsonProperty("images")
+    @Column(name = "images")
+    private List<String> images;
 
     @Nullable
     @JsonProperty("type_observation")

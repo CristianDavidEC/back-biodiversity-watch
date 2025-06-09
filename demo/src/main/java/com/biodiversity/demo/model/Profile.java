@@ -24,8 +24,8 @@ public class Profile {
     @JsonProperty("profession")
     private String profession;
 
-    @JsonProperty("image")
-    private String image;
+    @JsonProperty("avatar_url")
+    private String avatarUrl;
 
     @JsonProperty("created_at")
     private String createdAt;

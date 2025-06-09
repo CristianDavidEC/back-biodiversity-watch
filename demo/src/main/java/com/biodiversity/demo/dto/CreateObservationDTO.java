@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class CreateObservationDTO {
@@ -18,6 +19,10 @@ public class CreateObservationDTO {
 
     @Nullable
     private String state;
+
+    @Nullable
+    @JsonProperty("images")
+    private List<String> images;
 
     @Nullable
     @JsonProperty("type_observation")
