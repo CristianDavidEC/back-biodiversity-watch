@@ -15,7 +15,7 @@ public class ObservationService extends SupabaseService {
     public ResponseEntity<List<Observation>> getAllObservations(String authToken) {
         HttpHeaders headers = createHeaders(authToken);
         return restTemplate.exchange(
-                supabaseConfig.getSupabaseUrl() + OBSERVATIONS_ENDPOINT,
+                supabaseConfig.getSupabaseUrl() + OBSERVATIONS_ENDPOINT + "?order=created_at.desc",
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 new ParameterizedTypeReference<List<Observation>>() {
@@ -35,7 +35,8 @@ public class ObservationService extends SupabaseService {
     public ResponseEntity<List<Observation>> getObservationsByUserId(String authToken, String userId) {
         HttpHeaders headers = createHeaders(authToken);
         return restTemplate.exchange(
-                supabaseConfig.getSupabaseUrl() + OBSERVATIONS_ENDPOINT + "?id_observer_user=eq." + userId,
+                supabaseConfig.getSupabaseUrl() + OBSERVATIONS_ENDPOINT + "?id_observer_user=eq." + userId
+                        + "&order=created_at.desc",
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 new ParameterizedTypeReference<List<Observation>>() {
