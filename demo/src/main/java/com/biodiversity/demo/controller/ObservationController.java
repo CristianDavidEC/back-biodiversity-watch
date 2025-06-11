@@ -23,15 +23,20 @@ public class ObservationController {
     private ObservationService observationService;
 
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getAllObservations(@RequestHeader("Authorization") String authToken) {
-        logger.info("Solicitud recibida para obtener todas las observaciones");
-        ResponseEntity<List<Observation>> response = observationService.getAllObservations(authToken);
+    public ResponseEntity<Map<String, Object>> getAllObservations(
+            @RequestHeader("Authorization") String authToken,
+            @RequestParam(defaultValue = "1") int page) {
+        logger.info("Solicitud recibida para obtener todas las observaciones, página: {}", page);
+        ResponseEntity<List<Observation>> response = observationService.getAllObservations(authToken, page);
         List<Observation> observations = response.getBody();
-        logger.info("Se encontraron {} observaciones", observations != null ? observations.size() : 0);
+        logger.info("Se encontraron {} observaciones en la página {}", observations != null ? observations.size() : 0,
+                page);
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("success", true);
         responseBody.put("data", observations);
+        responseBody.put("page", page);
+        responseBody.put("pageSize", 5);
         responseBody.put("count", observations != null ? observations.size() : 0);
 
         return ResponseEntity.status(response.getStatusCode()).body(responseBody);
@@ -60,19 +65,24 @@ public class ObservationController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Map<String, Object>> getObservationsByUserId(@RequestHeader("Authorization") String authToken,
-            @PathVariable String userId) {
-        logger.info("Solicitud recibida para obtener observaciones del usuario con ID: {}", userId);
-        ResponseEntity<List<Observation>> response = observationService.getObservationsByUserId(authToken, userId);
+    public ResponseEntity<Map<String, Object>> getObservationsByUserId(
+            @RequestHeader("Authorization") String authToken,
+            @PathVariable String userId,
+            @RequestParam(defaultValue = "1") int page) {
+        logger.info("Solicitud recibida para obtener observaciones del usuario con ID: {}, página: {}", userId, page);
+        ResponseEntity<List<Observation>> response = observationService.getObservationsByUserId(authToken, userId,
+                page);
         List<Observation> observations = response.getBody();
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("success", true);
         responseBody.put("data", observations);
+        responseBody.put("page", page);
+        responseBody.put("pageSize", 5);
         responseBody.put("count", observations != null ? observations.size() : 0);
 
-        logger.info("Se encontraron {} observaciones para el usuario {}",
-                observations != null ? observations.size() : 0, userId);
+        logger.info("Se encontraron {} observaciones para el usuario {} en la página {}",
+                observations != null ? observations.size() : 0, userId, page);
         return ResponseEntity.status(response.getStatusCode()).body(responseBody);
     }
 
