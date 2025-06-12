@@ -36,27 +36,6 @@ CREATE INDEX admins_email_idx ON public.admins (email);
 CREATE INDEX admins_username_idx ON public.admins (username);
 
 
--- 3. Tabla de Especies (Species en tu diagrama)
-CREATE TABLE public.species (
-  id_specie uuid DEFAULT uuid_generate_v4() PRIMARY KEY, -- idSpecie en tu diagrama
-  name text UNIQUE NOT NULL,                             -- name en tu diagrama
-  images text[],                                         -- URLs de imágenes de la especie (List[DataFile])
-  distribution text,                                     -- distribution en tu diagrama
-  type text,                                             -- type en tu diagrama
-  description text,                                      -- description en tu diagrama
-  size text,                                             -- size en tu diagrama
-  habitat text,                                          -- habitat en tu diagrama
-  family text,                                           -- family en tu diagrama
-  created_at timestamp with time zone DEFAULT now(),
-  updated_at timestamp with time zone DEFAULT now()
-);
-
--- Índices
-CREATE INDEX species_name_idx ON public.species (name);
-CREATE INDEX species_type_idx ON public.species (type);
-CREATE INDEX species_habitat_idx ON public.species (habitat);
-
-
 -- 4. Tabla de Observaciones (Observations en tu diagrama)
 -- Relacionada con 'profiles' (idObserverUser) y 'species' (idSpecies).
 CREATE TABLE public.observations (
@@ -69,6 +48,9 @@ CREATE TABLE public.observations (
   images text[],                                               -- URLs de imágenes de la observación (List[DataFile])
   type_observation text,                                       -- typeObservation en tu diagrama
   verification_status boolean DEFAULT FALSE,                   -- verificationStatus en tu diagrama
+  similarity_percentage numeric,                               -- Porcentaje de similitud con la especie identificada
+  specie_scientific_name text,                                 -- Nombre científico de la especie identificada
+  specie_common_name text,                                     -- Nombre común de la especie identificada
   id_specie uuid REFERENCES public.species(id_specie) ON DELETE SET NULL, -- idSpecies en tu diagrama (si la especie se elimina, la observación puede quedarse sin referencia)
   id_observer_user uuid NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE, -- idObserverUser en tu diagrama, vinculado al perfil del usuario
   created_at timestamp with time zone DEFAULT now(),
@@ -178,3 +160,14 @@ ALTER TABLE public.observations ADD CONSTRAINT observations_id_specie_fkey
     FOREIGN KEY (id_specie) REFERENCES public.species(id_specie) 
     ON DELETE SET NULL 
     ON UPDATE CASCADE;
+
+-- Agregar nuevas columnas a la tabla observations
+ALTER TABLE public.observations 
+    ADD COLUMN similarity_percentage numeric,
+    ADD COLUMN specie_scientific_name text,
+    ADD COLUMN specie_common_name text;
+
+-- Agregar comentarios a las nuevas columnas
+COMMENT ON COLUMN public.observations.similarity_percentage IS 'Porcentaje de similitud con la especie identificada';
+COMMENT ON COLUMN public.observations.specie_scientific_name IS 'Nombre científico de la especie identificada';
+COMMENT ON COLUMN public.observations.specie_common_name IS 'Nombre común de la especie identificada';

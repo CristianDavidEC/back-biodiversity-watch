@@ -315,6 +315,6 @@ def predict():
 
 if __name__ == "__main__":
     # Railway asigna un puerto dinámicamente
-    port = int(os.environ.get("PORT", 8082))
+    port = int(os.environ.get("PORT", 8081))
     logger.info(f"Iniciando servidor Flask en puerto {port}...")
     app.run(host="0.0.0.0", port=port)

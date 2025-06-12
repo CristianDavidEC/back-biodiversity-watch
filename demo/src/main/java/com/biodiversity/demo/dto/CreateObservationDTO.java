@@ -31,6 +31,15 @@ public class CreateObservationDTO {
     @JsonProperty("verification_status")
     private boolean verificationStatus;
 
+    @JsonProperty("similarity_percentage")
+    private Double similarityPercentage;
+
+    @JsonProperty("specie_scientific_name")
+    private String specieScientificName;
+
+    @JsonProperty("specie_common_name")
+    private String specieCommonName;
+
     @JsonProperty("id_specie")
     private String idSpecies;
 

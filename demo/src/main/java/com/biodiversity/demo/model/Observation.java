@@ -50,6 +50,18 @@ public class Observation {
     @Column(name = "verification_status")
     private boolean verificationStatus;
 
+    @JsonProperty("similarity_percentage")
+    @Column(name = "similarity_percentage")
+    private Double similarityPercentage;
+
+    @JsonProperty("specie_scientific_name")
+    @Column(name = "specie_scientific_name")
+    private String specieScientificName;
+
+    @JsonProperty("specie_common_name")
+    @Column(name = "specie_common_name")
+    private String specieCommonName;
+
     @JsonProperty("id_specie")
     @Column(name = "id_specie")
     private String idSpecies;

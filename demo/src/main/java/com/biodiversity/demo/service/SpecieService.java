@@ -24,7 +24,17 @@ public class SpecieService extends SupabaseService {
 
     public ResponseEntity<Specie> getSpecieById(String authToken, String id) {
         HttpHeaders headers = createHeaders(authToken);
-        return executeRequest(SPECIES_ENDPOINT + "?id=eq." + id, HttpMethod.GET, headers, null, Specie.class);
+        ResponseEntity<List<Specie>> response = restTemplate.exchange(
+                supabaseConfig.getSupabaseUrl() + SPECIES_ENDPOINT + "?id_specie=eq." + id,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<Specie>>() {
+                });
+
+        if (response.getBody() != null && !response.getBody().isEmpty()) {
+            return ResponseEntity.ok(response.getBody().get(0));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Specie> createSpecie(String authToken, Specie specie) {
@@ -34,11 +44,41 @@ public class SpecieService extends SupabaseService {
 
     public ResponseEntity<Specie> updateSpecie(String authToken, String id, Specie specie) {
         HttpHeaders headers = createHeaders(authToken);
-        return executeRequest(SPECIES_ENDPOINT + "?id=eq." + id, HttpMethod.PATCH, headers, specie, Specie.class);
+        ResponseEntity<List<Specie>> response = restTemplate.exchange(
+                supabaseConfig.getSupabaseUrl() + SPECIES_ENDPOINT + "?id_specie=eq." + id,
+                HttpMethod.PATCH,
+                new HttpEntity<>(specie, headers),
+                new ParameterizedTypeReference<List<Specie>>() {
+                });
+
+        if (response.getBody() != null && !response.getBody().isEmpty()) {
+            return ResponseEntity.ok(response.getBody().get(0));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Void> deleteSpecie(String authToken, String id) {
         HttpHeaders headers = createHeaders(authToken);
-        return executeRequest(SPECIES_ENDPOINT + "?id=eq." + id, HttpMethod.DELETE, headers, null, Void.class);
+        ResponseEntity<List<Specie>> response = restTemplate.exchange(
+                supabaseConfig.getSupabaseUrl() + SPECIES_ENDPOINT + "?id_specie=eq." + id,
+                HttpMethod.DELETE,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<Specie>>() {
+                });
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity<List<Specie>> getSpecieByScientificName(String authToken, String scientificName) {
+        HttpHeaders headers = createHeaders(authToken);
+        return restTemplate.exchange(
+                supabaseConfig.getSupabaseUrl() + SPECIES_ENDPOINT + "?scientific_name=eq." + scientificName,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<Specie>>() {
+                });
     }
 }
