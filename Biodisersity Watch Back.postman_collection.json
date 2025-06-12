@@ -1,0 +1,639 @@
+{
+	"info": {
+		"_postman_id": "7046e87b-90c7-4583-8b18-508a96d1b5de",
+		"name": "Biodisersity Watch Back",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11608044"
+	},
+	"item": [
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Profile Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dev_url}}/api/profiles/12e2897b-368f-4840-bb0c-32f11111a194",
+							"host": [
+								"{{dev_url}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"12e2897b-368f-4840-bb0c-32f11111a194"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SupaBase",
+			"item": [
+				{
+					"name": "Get Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6IlBjZDdUbnRCUXF5QVVBYjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2ZtemN3YWphbHJhcmxnZ3Jrdm9nLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhZDRmYmY1YS1iNDQyLTRmZDItYjI0NC1lNTQ4NGVhMjg3MjQiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ4NTc3MTM1LCJpYXQiOjE3NDg1NzM1MzUsImVtYWlsIjoiY3Jpc3RpYW5lc2NvYmFyNDc2LmNkZWNAZ21haWwuY29tYyIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZGVzY3JpcHRpb24iOiJNZSBndXN0YSB0b21hciBmb3RvcyBhIGJpY2hvcyIsImVtYWlsIjoiY3Jpc3RpYW5lc2NvYmFyNDc2LmNkZWNAZ21haWwuY29tYyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiQ3Jpc3RpYW4gRGF2aWQgRXNjb2JhciAiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInByb2Zlc3Npb24iOiJJbmcgU2lzdGVtYXMiLCJzdWIiOiJhZDRmYmY1YS1iNDQyLTRmZDItYjI0NC1lNTQ4NGVhMjg3MjQifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc0ODU3MzUzNX1dLCJzZXNzaW9uX2lkIjoiNjlkNThjYWQtYzM3OS00MzQzLThkZDgtMTU3NTc2MmIzZmY2IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.aO7wMAk4wehYSQLdyb6vtw79gT1vtazsw0wYpGYyHN0"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Prefer",
+								"value": "return=minimal"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v1/profiles?select=id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v1",
+								"profiles"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "id"
+								}
+							]
+						},
+						"description": "Generated from cURL: \r\ncurl -X POST 'https://fmzcwajalrarlggrkvog.supabase.co/rest/v1/profiles' \\\r\n-H \"apikey: SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Authorization: Bearer SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Prefer: return=minimal\" \\\r\n-d '{ \"some_column\": \"someValue\", \"other_column\": \"otherValue\" }'\r\n          "
+					},
+					"response": []
+				},
+				{
+					"name": "Create Observation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Prefer",
+								"value": "return=representation"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2024-03-20\",\r\n  \"latitude\": 4.570868,\r\n  \"longitude\": -74.297333,\r\n  \"note\": \"Observación de un colibrí en el jardín botánico\",\r\n  \"state\": \"activo\",\r\n  \"type_observation\": \"avistamiento\",\r\n  \"verification_status\": false,\r\n  \"id_observer_user\": \"ad4fbf5a-b442-4fd2-b244-e5484ea28724\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v1/observations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v1",
+								"observations"
+							]
+						},
+						"description": "Generated from cURL: \r\ncurl -X POST 'https://fmzcwajalrarlggrkvog.supabase.co/rest/v1/profiles' \\\r\n-H \"apikey: SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Authorization: Bearer SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Prefer: return=minimal\" \\\r\n-d '{ \"some_column\": \"someValue\", \"other_column\": \"otherValue\" }'\r\n          "
+					},
+					"response": []
+				},
+				{
+					"name": "logging",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"console.log(jsonData)\r",
+									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtemN3YWphbHJhcmxnZ3Jrdm9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODk2NTQsImV4cCI6MjA2MjA2NTY1NH0.9AhCXX18XqrxhJJFqb35EgtJ-CzSwKqhaaO10LUSQAE"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"cristianescobarcdec@gmail.com\",\r\n    \"password\": \"cdec1309\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/v1/token?grant_type=password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"v1",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "password"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --request POST \\\r\n  --url 'https://<TU_PROJECT_REF>.supabase.co/auth/v1/token?grant_type=password' \\\r\n  --header 'apikey: <TU_SUPABASE_ANON_KEY>' \\\r\n  --header 'Content-Type: application/json' \\\r\n  --data '{\r\n    \"email\": \"tu_email_de_usuario_de_prueba\",\r\n    \"password\": \"tu_contraseña_de_prueba\"\r\n  }'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Observation",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2024-03-20\",\r\n  \"latitude\": 4.570868,\r\n  \"longitude\": -74.297333,\r\n  \"note\": \"Observación de un colibrí en el jardín botánico\",\r\n  \"state\": \"activo\",\r\n  \"type_observation\": \"avistamiento\",\r\n  \"verification_status\": false,\r\n  \"id_observer_user\": \"12e2897b-368f-4840-bb0c-32f11111a194\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev_url}}/api/observations",
+							"host": [
+								"{{dev_url}}"
+							],
+							"path": [
+								"api",
+								"observations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/api/observations/7bcf9f85-e1a5-4db5-ad59-b68423e10845",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"api",
+								"observations",
+								"7bcf9f85-e1a5-4db5-ad59-b68423e10845"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev_url}}/api/observations?page=1&specieCommonName=oso",
+							"host": [
+								"{{dev_url}}"
+							],
+							"path": [
+								"api",
+								"observations"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "specieCommonName",
+									"value": "oso"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev_url}}/api/observations/user/aa813a39-45e1-4b68-8fd7-7358f7c6c13c?page=1",
+							"host": [
+								"{{dev_url}}"
+							],
+							"path": [
+								"api",
+								"observations",
+								"user",
+								"aa813a39-45e1-4b68-8fd7-7358f7c6c13c"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/test",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "IA",
+			"item": [
+				{
+					"name": "predict local",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Crist/Downloads/hq_283656564.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://192.168.1.69:8081/predict",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"69"
+							],
+							"port": "8081",
+							"path": [
+								"predict"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "predict dev",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Crist/Downloads/oso.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://ia-model-production.up.railway.app/predict",
+							"protocol": "https",
+							"host": [
+								"ia-model-production",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"predict"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Specie",
+			"item": [
+				{
+					"name": "Get id Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/api/species/22542bed-060f-4047-b7be-7af18ac4757d",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"api",
+								"species",
+								"22542bed-060f-4047-b7be-7af18ac4757d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Specie-Nombre cientifico",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/api/species/scientific-name/:scientificName",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"api",
+								"species",
+								"scientific-name",
+								":scientificName"
+							],
+							"variable": [
+								{
+									"key": "scientificName",
+									"value": "Halenia weddelliana"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Descaga iamgenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.inaturalist.org/v1/observations?taxon_name=Tremarctos%20ornatus&quality_grade=research&per_page=200&order=desc&order_by=created_at",
+							"protocol": "https",
+							"host": [
+								"api",
+								"inaturalist",
+								"org"
+							],
+							"path": [
+								"v1",
+								"observations"
+							],
+							"query": [
+								{
+									"key": "taxon_name",
+									"value": "Tremarctos%20ornatus"
+								},
+								{
+									"key": "quality_grade",
+									"value": "research"
+								},
+								{
+									"key": "per_page",
+									"value": "200"
+								},
+								{
+									"key": "order",
+									"value": "desc"
+								},
+								{
+									"key": "order_by",
+									"value": "created_at"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://fmzcwajalrarlggrkvog.supabase.co/rest/v1"
+		},
+		{
+			"key": "key",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtemN3YWphbHJhcmxnZ3Jrdm9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0ODk2NTQsImV4cCI6MjA2MjA2NTY1NH0.9AhCXX18XqrxhJJFqb35EgtJ-CzSwKqhaaO10LUSQAE",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJIUzI1NiIsImtpZCI6IlBjZDdUbnRCUXF5QVVBYjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2ZtemN3YWphbHJhcmxnZ3Jrdm9nLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhYTgxM2EzOS00NWUxLTRiNjgtOGZkNy03MzU4ZjdjNmMxM2MiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ5NzQ3NTQ0LCJpYXQiOjE3NDk3NDM5NDQsImVtYWlsIjoiY3Jpc3RpYW5lc2NvYmFyY2RlY0BnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImRlc2NyaXB0aW9uIjoiVG9tbyBmb3RvcyBhIHRvZG8iLCJlbWFpbCI6ImNyaXN0aWFuZXNjb2JhcmNkZWNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJQZXBlIFBlcmV6IiwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJwcm9mZXNzaW9uIjoiSW5nIFNvZnR3YXJlICIsInN1YiI6ImFhODEzYTM5LTQ1ZTEtNGI2OC04ZmQ3LTczNThmN2M2YzEzYyJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzQ5NzQzOTQ0fV0sInNlc3Npb25faWQiOiJiYTA2YTA4MS0yMjA5LTRkZmUtYmM0MC03M2EzNTkyOTg3YTEiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.6It7EAbBw1Ln2SOFa-iRfDC81cJ1pVkXUhtuVj_vSMI",
+			"type": "string"
+		},
+		{
+			"key": "local_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "dev_url",
+			"value": "https://back-biodiversity-watch-production.up.railway.app",
+			"type": "string"
+		}
+	]
+}
