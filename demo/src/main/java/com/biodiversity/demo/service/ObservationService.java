@@ -12,15 +12,22 @@ public class ObservationService extends SupabaseService {
 
     private static final String OBSERVATIONS_ENDPOINT = "/rest/v1/observations";
 
-    public ResponseEntity<List<Observation>> getAllObservations(String authToken, int page) {
+    public ResponseEntity<List<Observation>> getAllObservations(String authToken, int page, String specieCommonName) {
         HttpHeaders headers = createHeaders(authToken);
         int limit = 5;
         int offset = (page - 1) * limit;
+
+        String url = supabaseConfig.getSupabaseUrl() + OBSERVATIONS_ENDPOINT +
+                "?order=created_at.desc" +
+                "&limit=" + limit +
+                "&offset=" + offset;
+
+        if (specieCommonName != null && !specieCommonName.trim().isEmpty()) {
+            url += "&specie_common_name=ilike.*" + specieCommonName + "*";
+        }
+
         return restTemplate.exchange(
-                supabaseConfig.getSupabaseUrl() + OBSERVATIONS_ENDPOINT +
-                        "?order=created_at.desc" +
-                        "&limit=" + limit +
-                        "&offset=" + offset,
+                url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 new ParameterizedTypeReference<List<Observation>>() {

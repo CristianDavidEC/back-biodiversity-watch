@@ -25,9 +25,11 @@ public class ObservationController {
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllObservations(
             @RequestHeader("Authorization") String authToken,
-            @RequestParam(defaultValue = "1") int page) {
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(required = false) String specieCommonName) {
         logger.info("Solicitud recibida para obtener todas las observaciones, página: {}", page);
-        ResponseEntity<List<Observation>> response = observationService.getAllObservations(authToken, page);
+        ResponseEntity<List<Observation>> response = observationService.getAllObservations(authToken, page,
+                specieCommonName);
         List<Observation> observations = response.getBody();
         logger.info("Se encontraron {} observaciones en la página {}", observations != null ? observations.size() : 0,
                 page);
