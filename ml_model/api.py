@@ -29,11 +29,168 @@ if os.path.exists(train_dir):
         [d for d in os.listdir(train_dir) if os.path.isdir(
             os.path.join(train_dir, d))]
     )
+    logger.info(f"Especies cargadas: {especies}")
 else:
     logger.warning(
         f"Directorio {train_dir} no encontrado. Usando especies por defecto.")
-    especies = ["Arachniodes_denticulata", "Calamagrostis_effusa", "Espeletia_hartwegiana",
-                "Polylepis_quadrijuga", "Puya_goudotiana"]
+    especies = [
+        # --- PLANTAS ---
+        # Frailejones y relacionados (Asteraceae)
+        "Espeletia grandiflora",        # Frailejón común/de oso
+        "Espeletia hartwegiana",       # Frailejón de Hartweg
+        "Espeletia pycnophylla",       # Frailejón de hojas densas
+        "Espeletia argentea",          # Frailejón plateado
+        "Espeletiopsis corymbosa",     # Frailejón falso
+        # (Aunque más de Venezuela, algunas poblaciones/híbridos en Colombia)
+        "Coespeletia timotensis",
+        "Libanothamnus neriifolius",   # Tabacote morado
+        "Pentacalia ledifolia",        # Chilca de páramo
+        "Baccharis tricuneata",        # Romerito de páramo
+        "Gynoxys fuliginosa",          # Árnica de páramo
+        "Senecio niveoaureus",         # Senecio dorado
+        "Werneria nubigena",           # Werneria de las nubes
+        "Loricaria complanata",        # Loricaria
+        "Diplostephium phylicoides",   # Falso romero
+        "Ageratina tinifolia",         # Salvia amarga de páramo
+        # Valeriana de páramo (no es Valeriana real)
+        "Chaptalia cordata",
+
+        # Gramíneas y Ciperáceas (Poaceae, Cyperaceae)
+        "Calamagrostis effusa",        # Pajonal de páramo
+        "Chusquea tessellata",         # Chusque o bambú de páramo
+        "Festuca dolichophylla",       # Festuca de páramo
+        "Agrostis perennans",          # Pasto de páramo
+        "Carex bonplandii",            # Cortadera de Bonpland
+        "Rhynchospora paramora",       # Rhynchospora de páramo
+
+        # Rosáceas (Rosaceae)
+        # Colorado, Siete Cueros de páramo (árbol de mayor altitud)
+        "Polylepis quadrijuga",
+        "Acaena elongata",             # Cadillo de páramo
+        "Lachemilla orbiculata",       # Guardarocío
+
+        # Ericáceas (Ericaceae) - Arándanos y parientes
+        "Vaccinium floribundum",       # Mortiño, agraz de páramo
+        "Pernettya prostrata",         # Arrayancillo
+        "Gaultheria anastomosans",     # Gaultheria
+        "Macleania rupestris",         # Uva camarona
+        "Disterigma empetrifolium",    # Disterigma
+
+        # Puyas (Bromeliaceae)
+        "Puya goudotiana",             # Puya de Goudot
+        "Puya nivalis",                # Puya de las nieves
+        "Puya trianae",                # Puya de Triana
+
+        # Otras familias de plantas
+        "Hypericum laricifolium",      # Chite, corazoncillo
+        "Gentiana sedifolia",          # Genciana de páramo
+        "Gentianella corymbosa",       # Gencianela
+        "Halenia weddelliana",         # Halenia
+        "Valeriana plantaginea",       # Valeriana de páramo
+        "Lupinus alopecuroides",       # Lupino de páramo, chocho de páramo
+        "Draba litamo",                # Draba del Litamo (endemismo)
+        # Llantén de páramo (formador de cojines)
+        "Plantago rigida",
+        "Azorella crenata",            # Azorella (formador de cojines)
+        "Arcytophyllum muticum",       # Coralito de páramo
+        "Castilleja fissifolia",       # Pincelito de páramo
+        "Calceolaria herbeohybrida",   # Zapatito de páramo
+        "Ourisia chamaedrifolia",      # Ourisia
+        "Lysipomia sphagnophila",      # Lisipomia de musgo
+        "Gunnera magellanica",         # Ruibarbo de páramo (pequeño)
+        "Ranunculus peruvianus",       # Botón de oro de páramo
+        "Geranium sibbaldioides",      # Geranio de páramo
+        "Oxalis medicaginea",          # Vinagrillo de páramo
+        "Jamesonia bogotensis",        # Helecho de cuero
+        "Huperzia crassa",             # Licopodio de páramo
+        "Isoetes palmeri",             # Isoetes (en lagunas)
+        "Sphagnum magellanicum",       # Musgo de turbera
+
+        # Orquídeas de altura
+        "Epidendrum aggregatum",       # Orquídea de páramo
+        # Masdevallia roja (puede encontrarse en zonas altas)
+        "Masdevallia coccinea",
+        "Elleanthus aurantiacus",      # Elleanthus naranja
+
+        # --- MAMÍFEROS ---
+        "Tremarctos ornatus",          # Oso de anteojos, oso andino
+        "Tapirus pinchaque",           # Danta de montaña, tapir andino
+        "Puma concolor",               # Puma
+        "Odocoileus virginianus goudotii",  # Venado de cola blanca de páramo
+        "Mazama rufina",               # Venado soche o colorado pequeño
+        "Pudu mephistophiles",         # Pudú del norte, venado conejo
+        "Lycalopex culpaeus",          # Zorro culpeo andino
+        "Mustela frenata",             # Comadreja de cola larga
+        "Conepatus semistriatus",      # Zorrillo o mapurite de páramo
+        # Conejo de páramo (antes S. brasiliensis andinus)
+        "Sylvilagus andinus",
+        "Cuniculus taczanowskii",      # Tinajo o paca de montaña
+        # Pacarana o Guagua de cola ancha (bordes de páramo)
+        "Dinomys branickii",
+        "Thomasomys niveipes",         # Ratón de páramo de patas blancas
+        # Ratón de agua de Orces (especialista de arroyos)
+        "Chibchanomys orcesi",
+        "Cryptotis colombiana",        # Musaraña colombiana de páramo
+        "Coendou rufescens",           # Puercoespín de cola corta o erizo rojo
+
+        # --- AVES ---
+        "Vultur gryphus",              # Cóndor de los Andes
+        "Geranoaetus melanoleucus",    # Águila mora
+        "Phalcoboenus carunculatus",   # Caracara paramuno
+        "Falco sparverius",            # Cernícalo americano
+        # Tucán andino de pico negro (Terlaque Andino)
+        "Andigena nigrirostris",
+        "Penelope montagnii",          # Pava andina
+        "Anas andium",                 # Pato andino, cerceta andina
+        # Colibrí chivito de páramo bogotano (Bearded Helmetcrest)
+        "Oxypogon guerinii",
+        # Colibrí estrella ecuatoriano (puede llegar a páramos del sur de Col.)
+        "Oreotrochilus estella",
+        "Aglaeactis cupripennis",      # Colibrí rayito de sol brillante
+        "Lesbia victoriae",            # Colibrí coludo azul
+        "Eriocnemis vestita",          # Calzadito reluciente
+        "Pterophanes cyanopterus",     # Colibrí gigante de alas azules
+        "Coeligena helianthea",        # Inca ventriazul
+        "Metallura tyrianthina",       # Metalura tiria
+        "Grallaria quitensis",         # Tororoi leonado (Tawny Antpitta)
+        "Scytalopus spillmanni",       # Tapaculo de Spillmann
+        # Cinclodes alifranjeado (Bar-winged Cinclodes)
+        "Cinclodes fuscus",
+        "Muscisaxicola alpinus",       # Dormilona alpina
+        # Cucarachero de pantano de Apolinar (endémico)
+        "Cistothorus apolinari",
+        "Zonotrichia capensis",        # Copetón, gorrión de collar rufo
+        "Phrygilus unicolor",          # Fringilo plomizo
+        "Diglossa humeralis",          # Pinchaflor negro
+        "Anisognathus igniventris",    # Tangara montana ventriescarlata
+        "Atlapetes schistaceus",       # Gorrión montés pizarroso
+
+        # --- ANFIBIOS --- (Muy afectados por quitridiomicosis)
+        "Pristimantis bogotensis",     # Coquí de Bogotá (rana de lluvia)
+        # Rana arlequín de Muisca (CR, posiblemente extinta)
+        "Atelopus muisca",
+        "Dendropsophus labialis",      # Ranita verde de quebrada
+
+        # --- REPTILES ---
+        "Stenocercus trachycephalus",  # Lagartija de collar espinosa
+        "Riama striata",               # Lagartija listada de páramo
+
+        # --- INSECTOS --- (Extremadamente diversos, algunos ejemplos)
+        "Bombus rubicundus",           # Abejorro de páramo
+        "Colias dimera",               # Mariposa amarilla de los Andes
+        # Mariposa Vanesa americana (llega a altura)
+        "Vanessa virginiensis",
+        # Plecóptero de glaciares y arroyos muy fríos (género, especie varía)
+        "Andiperla willinki",
+        # Zancudos gigantes de páramo (muchas especies)
+        "Tipula (género)",
+
+        # --- PECES --- (Poca diversidad nativa en aguas de páramo estricto)
+        # Capitán de la sabana, pez gato de los Andes (puede estar en corrientes altas)
+        "Astroblepus grixalvii",
+        # Guapucha (en sistemas acuáticos conectados al páramo)
+        "Trichomycterus bogotensis"
+    ]
 
 # Ruta al modelo SavedModel
 saved_model_dir = os.path.join(
@@ -53,6 +210,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def health_check():
+    logger.info(f"Especies disponibles: {especies}")
+    logger.info(f"Cantidad de especies: {len(especies)}")
     return jsonify({
         "status": "healthy",
         "especies_disponibles": len(especies),
