@@ -6,7 +6,8 @@ from tensorflow.keras.preprocessing import image
 # Leer nombres de especies automáticamente
 train_dir = "model/data/processed/train"
 especies = sorted(
-    [d for d in os.listdir(train_dir) if os.path.isdir(os.path.join(train_dir, d))]
+    [d for d in os.listdir(train_dir) if os.path.isdir(
+        os.path.join(train_dir, d))]
 )
 NUMERO_DE_ESPECIES = len(especies)
 
@@ -14,7 +15,8 @@ NUMERO_DE_ESPECIES = len(especies)
 saved_model_dir = "model/models/clasificador_especies_savedmodel"
 
 # Cargar el modelo SavedModel como TFSMLayer
-modelo = keras.layers.TFSMLayer(saved_model_dir, call_endpoint="serving_default")
+modelo = keras.layers.TFSMLayer(
+    saved_model_dir, call_endpoint="serving_default")
 
 # Ruta de la imagen a probar
 imagen_prueba = "model/data/mi_prueba.jpg"  # Cambia por la ruta de tu imagen

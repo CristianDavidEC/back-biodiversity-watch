@@ -10,7 +10,7 @@ from datetime import datetime
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("api.log"), logging.StreamHandler()],
+    handlers=[logging.StreamHandler()],  # Solo consola en Railway
 )
 logger = logging.getLogger(__name__)
 
@@ -20,20 +20,44 @@ os.makedirs(TEMP_DIR, exist_ok=True)
 logger.info(f"Directorio temporal creado en: {TEMP_DIR}")
 
 # Leer nombres de especies automáticamente
-train_dir = "back-biodiversity-watch/ml_model/model/data/processed/train"
-especies = sorted(
-    [d for d in os.listdir(train_dir) if os.path.isdir(os.path.join(train_dir, d))]
-)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+train_dir = os.path.join(BASE_DIR, "model", "data", "processed", "train")
+
+# Verificar si el directorio existe antes de leer
+if os.path.exists(train_dir):
+    especies = sorted(
+        [d for d in os.listdir(train_dir) if os.path.isdir(
+            os.path.join(train_dir, d))]
+    )
+else:
+    logger.warning(
+        f"Directorio {train_dir} no encontrado. Usando especies por defecto.")
+    especies = ["Arachniodes_denticulata", "Calamagrostis_effusa", "Espeletia_hartwegiana",
+                "Polylepis_quadrijuga", "Puya_goudotiana"]
 
 # Ruta al modelo SavedModel
-saved_model_dir = (
-    "back-biodiversity-watch/ml_model/model/models/clasificador_especies_savedmodel"
-)
+saved_model_dir = os.path.join(
+    BASE_DIR, "model", "models", "clasificador_especies_savedmodel")
 
-# Cargar el modelo SavedModel como TFSMLayer
-modelo = keras.layers.TFSMLayer(saved_model_dir, call_endpoint="serving_default")
+# Verificar si el modelo existe
+if os.path.exists(saved_model_dir):
+    modelo = keras.layers.TFSMLayer(
+        saved_model_dir, call_endpoint="serving_default")
+    logger.info("Modelo cargado exitosamente")
+else:
+    logger.error(f"Modelo no encontrado en {saved_model_dir}")
+    modelo = None
 
 app = Flask(__name__)
+
+
+@app.route("/", methods=["GET"])
+def health_check():
+    return jsonify({
+        "status": "healthy",
+        "especies_disponibles": len(especies),
+        "modelo_cargado": modelo is not None
+    })
 
 
 @app.before_request
@@ -117,5 +141,7 @@ def predict():
 
 
 if __name__ == "__main__":
-    logger.info("Iniciando servidor Flask en puerto 8082...")
-    app.run(host="0.0.0.0", port=8082)
+    # Railway asigna un puerto dinámicamente
+    port = int(os.environ.get("PORT", 8082))
+    logger.info(f"Iniciando servidor Flask en puerto {port}...")
+    app.run(host="0.0.0.0", port=port)
