@@ -25,48 +25,83 @@ def organize_dataset(source_dir, target_dir, test_size=0.2, val_size=0.2):
         d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d))
     ]
 
+    print("\nProcesando clases:")
     for class_name in classes:
+        print(f"\nProcesando clase: {class_name}")
         # Create class directories in train, val, and test
         for split in ["train", "val", "test"]:
-            os.makedirs(os.path.join(target_dir, split, class_name), exist_ok=True)
+            os.makedirs(os.path.join(target_dir, split,
+                        class_name), exist_ok=True)
 
         # Get all images for this class
         class_dir = os.path.join(source_dir, class_name)
         images = [
-            f for f in os.listdir(class_dir) if f.endswith((".jpg", ".jpeg", ".png"))
+            f for f in os.listdir(class_dir) if f.lower().endswith((".jpg", ".jpeg", ".png"))
         ]
 
         # Saltar si la carpeta está vacía
         if len(images) == 0:
-            print(f"[AVISO] Carpeta vacía para la clase '{class_name}', se omite.")
+            print(
+                f"[AVISO] Carpeta vacía para la clase '{class_name}', se omite.")
             continue
 
-        # Split into train, validation, and test sets
-        train_imgs, test_imgs = train_test_split(
-            images, test_size=test_size, random_state=42
-        )
-        train_imgs, val_imgs = train_test_split(
-            train_imgs, test_size=val_size, random_state=42
-        )
+        print(f"Total de imágenes encontradas: {len(images)}")
 
-        # Copy images to their respective directories
-        for img in train_imgs:
-            shutil.copy2(
-                os.path.join(class_dir, img),
-                os.path.join(target_dir, "train", class_name, img),
+        # Si hay muy pocas imágenes, ponerlas todas en entrenamiento
+        if len(images) <= 3:
+            print(
+                f"[AVISO] Clase '{class_name}' tiene muy pocas imágenes ({len(images)}). Todas irán a entrenamiento.")
+            for img in images:
+                shutil.copy2(
+                    os.path.join(class_dir, img),
+                    os.path.join(target_dir, "train", class_name, img),
+                )
+            continue
+
+        # Para clases con más de 3 imágenes, hacer la división normal
+        try:
+            # Primero dividir en train y test
+            train_imgs, test_imgs = train_test_split(
+                images, test_size=test_size, random_state=42
             )
 
-        for img in val_imgs:
-            shutil.copy2(
-                os.path.join(class_dir, img),
-                os.path.join(target_dir, "val", class_name, img),
+            # Luego dividir train en train y validation
+            train_imgs, val_imgs = train_test_split(
+                train_imgs, test_size=val_size, random_state=42
             )
 
-        for img in test_imgs:
-            shutil.copy2(
-                os.path.join(class_dir, img),
-                os.path.join(target_dir, "test", class_name, img),
-            )
+            # Copy images to their respective directories
+            for img in train_imgs:
+                shutil.copy2(
+                    os.path.join(class_dir, img),
+                    os.path.join(target_dir, "train", class_name, img),
+                )
+
+            for img in val_imgs:
+                shutil.copy2(
+                    os.path.join(class_dir, img),
+                    os.path.join(target_dir, "val", class_name, img),
+                )
+
+            for img in test_imgs:
+                shutil.copy2(
+                    os.path.join(class_dir, img),
+                    os.path.join(target_dir, "test", class_name, img),
+                )
+
+            print(f"Distribución de imágenes para {class_name}:")
+            print(f"- Entrenamiento: {len(train_imgs)}")
+            print(f"- Validación: {len(val_imgs)}")
+            print(f"- Prueba: {len(test_imgs)}")
+
+        except Exception as e:
+            print(f"[ERROR] Error procesando clase '{class_name}': {str(e)}")
+            print("Poniendo todas las imágenes en entrenamiento...")
+            for img in images:
+                shutil.copy2(
+                    os.path.join(class_dir, img),
+                    os.path.join(target_dir, "train", class_name, img),
+                )
 
 
 def create_data_generators(

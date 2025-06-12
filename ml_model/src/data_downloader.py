@@ -13,7 +13,7 @@ class DataDownloader:
         self.api_url = "https://api.inaturalist.org/v1/observations"
         self.headers = {"User-Agent": "BiodiversityWatch/1.0"}
 
-    def download_species_data(self, species_list, min_observations=15):
+    def download_species_data(self, species_list, min_observations=50):
         """
         Descarga imágenes de especies específicas de iNaturalist
 
@@ -44,7 +44,7 @@ class DataDownloader:
                     self.api_url, params=params, headers=self.headers
                 )
                 data = response.json()
-
+                print(data)
                 # Descargar imágenes
                 count = 0
                 for obs in data.get("results", []):
@@ -124,6 +124,92 @@ class DataDownloader:
 
             except Exception as e:
                 print(f"Error descargando {especie}: {str(e)}")
+
+    def download_species_data_high_quality(self, species_list, target_size=500, max_images=1):
+        """
+        Descarga imágenes de alta calidad de especies específicas de iNaturalist
+
+        Args:
+            species_list (list): Lista de nombres científicos de especies
+            target_size (int): Tamaño objetivo en píxeles para el lado más largo de la imagen
+            max_images (int): Número máximo de imágenes a descargar por especie
+        """
+        for species in species_list:
+            print(f"Descargando imágenes de alta calidad para {species}...")
+
+            # Crear directorio para la especie
+            species_dir = os.path.join(
+                self.output_dir, species.replace(" ", "_"))
+            os.makedirs(species_dir, exist_ok=True)
+
+            # Parámetros de búsqueda
+            params = {
+                "taxon_name": species,
+                "quality_grade": "research",  # Solo observaciones verificadas
+                "per_page": 200,
+                "order": "desc",
+                "order_by": "created_at",
+            }
+
+            try:
+                # Obtener observaciones
+                response = requests.get(
+                    self.api_url, params=params, headers=self.headers
+                )
+                data = response.json()
+                # Descargar imágenes
+                count = 0
+                for obs in data.get("results", []):
+                    if count >= max_images:
+                        break
+
+                    # # Obtener URL de la imagen en alta calidad
+                    # if "photos" in obs and obs["photos"]:
+                    #     # Intentar obtener la URL de la imagen en alta calidad
+                    #     photo_url = obs["photos"][0].get(
+                    #         "original_url", obs["photos"][0]["url"])
+
+                    #     # Si no hay original_url, intentar con la URL de mayor resolución disponible
+                    #     if "original_url" not in obs["photos"][0]:
+                    #         # La API de iNaturalist proporciona diferentes tamaños de imagen
+                    #         # Intentamos obtener la URL de mayor resolución disponible
+                    #         photo_url = obs["photos"][0].get("large_url",
+                    #                                          obs["photos"][0].get("medium_url",
+                    #                                                               obs["photos"][0].get("small_url",
+                    #                                                                                    obs["photos"][0]["url"])))
+                    photo_url = obs["taxon"]["default_photo"]["medium_url"]
+                    if photo_url is None:
+                        continue
+                    # Descargar imagen
+                    img_response = requests.get(photo_url)
+
+                    if img_response.status_code == 200:
+                        # Procesar y redimensionar la imagen
+                        img = Image.open(BytesIO(img_response.content))
+
+                        # Calcular nuevas dimensiones manteniendo la proporción
+                        ratio = target_size / max(img.size)
+                        new_size = tuple(int(dim * ratio)
+                                         for dim in img.size)
+
+                        # Redimensionar la imagen usando LANCZOS para mejor calidad
+                        img = img.resize(
+                            new_size, Image.Resampling.LANCZOS)
+
+                        # Guardar imagen con alta calidad y optimización
+                        img_path = os.path.join(
+                            species_dir, f"hq_{obs['id']}.jpg")
+                        img.save(img_path, quality=95, optimize=True)
+                        count += 1
+
+                        # Esperar para no sobrecargar la API
+                        time.sleep(0.5)
+
+                print(
+                    f"Descargadas {count} imágenes de alta calidad para {species}")
+
+            except Exception as e:
+                print(f"Error descargando {species}: {str(e)}")
 
 
 # Ejemplo de uso
@@ -289,9 +375,9 @@ if __name__ == "__main__":
         "Trichomycterus bogotensis"
     ]
     # Descargar datos del PNN Los Nevados
-    print("Descargando datos del PNN Los Nevados...")
+    # print("Descargando datos del PNN Los Nevados...")
     # downloader.download_pnn_nevados_data(paramo_species_colombia)
 
     # Descargar datos de especies específicas
-
-    downloader.download_species_data(paramo_species_colombia)
+    downloader.download_species_data_high_quality(paramo_species_colombia)
+    # downloader.download_species_data(paramo_species_colombia)
