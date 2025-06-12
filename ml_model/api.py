@@ -60,6 +60,20 @@ def health_check():
     })
 
 
+@app.route("/test", methods=["GET"])
+def test_endpoint():
+    """Ruta de prueba simple para verificar conectividad"""
+    return jsonify({
+        "mensaje": "¡Servicio funcionando correctamente! 🌿",
+        "api": "BiodiversityWatch ML",
+        "endpoints_disponibles": {
+            "GET /": "Health check básico",
+            "GET /test": "Prueba de conectividad",
+            "POST /predict": "Predicción de especies (requiere imagen)"
+        }
+    })
+
+
 @app.before_request
 def log_request_info():
     logger.info("Headers: %s", request.headers)
