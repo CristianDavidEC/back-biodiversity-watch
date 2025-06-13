@@ -1,146 +1,156 @@
-# BiodiversityWatch Image Classification Model
+# Manual de Instalación y Uso - Biodiversity Watch
 
-Este módulo contiene el modelo de aprendizaje automático para la clasificación de especies en el proyecto BiodiversityWatch. El modelo está diseñado para identificar especies locales del PNN Los Nevados usando imágenes capturadas desde la aplicación móvil.
+Este manual proporciona instrucciones detalladas para la instalación, configuración y uso del sistema de reconocimiento de especies de Biodiversity Watch.
 
-## Características
+## Requisitos Previos
 
-- Transferencia de aprendizaje usando MobileNetV2 para despliegue eficiente en móvil
-- Aumentación de datos para mejorar la generalización
-- Conversión a TensorFlow Lite para despliegue móvil
-- Soporte para flora y fauna
-- Integración con datasets de iNaturalist y Herbario Nacional Colombiano
+- Python 3.8 o superior
+- pip (gestor de paquetes de Python)
+- Git
+- Conexión a Internet
+- Espacio en disco: mínimo 2GB (dependiendo del tamaño del dataset)
 
-## Estructura de directorios
+## 1. Instalación del Entorno
 
-```
-ml_model/
-├── data/               # Almacenamiento de datos (imágenes originales y procesadas)
-├── models/             # Modelos entrenados y exportados
-├── notebooks/          # Notebooks para experimentación
-├── src/                # Código fuente (modelos, utilidades, scripts)
-│   ├── model.py        # Implementación principal del modelo
-│   ├── data_preprocessing.py  # Utilidades de preprocesamiento
-│   └── data_downloader.py     # Descarga de datos desde iNaturalist
-├── train_model.py      # Script para entrenamiento
-├── predict.py          # Script para predicción
-└── requirements.txt    # Dependencias de Python
-```
-
-## Buenas prácticas con `.gitignore`
-
-Para mantener tu repositorio limpio y profesional, asegúrate de ignorar:
-
-- **Entornos virtuales:**
-  - `venv/`, `.env/`, `.venv/`, `env/`
-- **Archivos temporales de Python:**
-  - `__pycache__/`, `*.pyc`, `*.pyo`, `*.pyd`
-- **Checkpoints de Jupyter:**
-  - `.ipynb_checkpoints/`
-- **Configuraciones de editores:**
-  - `.vscode/`, `.idea/`
-- **Modelos y datos generados:**
-  - `ml_model/models/` (modelos entrenados)
-  - `ml_model/data/processed/` (datos procesados)
-  - `ml_model/data/*.jpg`, `ml_model/data/*.png` (imágenes descargadas)
-- **Archivos de sistema:**
-  - `.DS_Store`, `Thumbs.db`
-
-Ejemplo de `.gitignore` recomendado:
-
-```
-# Entornos virtuales
-venv/
-.env/
-.venv/
-env/
-
-# Archivos temporales de Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Checkpoints de Jupyter
-.ipynb_checkpoints/
-
-# Configuración de editores
-.vscode/
-.idea/
-
-# Modelos y datos generados
-ml_model/models/
-ml_model/data/processed/
-ml_model/data/*.jpg
-ml_model/data/*.png
-
-# Archivos de sistema
-.DS_Store
-Thumbs.db
-```
-
-## Configuración
-
-1. Crea un entorno virtual:
+### 1.1 Clonar el Repositorio
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+git clone https://github.com/CristianDavidEC/back-biodiversity-watch.git
+cd back-biodiversity-watch/ml_model
 ```
 
-2. Instala las dependencias:
+### 1.2 Crear y Activar Entorno Virtual
+
+```bash
+# Windows
+python -m venv .venv
+.venv\Scripts\activate
+
+# Linux/Mac
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 1.3 Instalar Dependencias
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Uso
+## 2. Preparación del Dataset
 
-1. Prepara tu dataset:
+### 2.1 Estructura de Directorios
 
-   - Organiza imágenes en carpetas por especie
-   - Usa las utilidades de preprocesamiento para dividir en train/val/test
+Crear la siguiente estructura de directorios:
 
-2. Entrena el modelo:
-
-```python
-from src.model import SpeciesClassifier
-
-# Inicializar el modelo
-clasificador = SpeciesClassifier(num_classes=NUMERO_DE_ESPECIES)
-
-# Construir el modelo
-clasificador.build_model()
-
-# Entrenar el modelo
-historial = clasificador.train(
-    train_dir='data/train',
-    validation_dir='data/val',
-    batch_size=32,
-    epochs=20
-)
-
-# Guardar el modelo
-clasificador.save_model('models/clasificador_especies.h5')
+```
+ml_model/
+└── model/
+    └── data/
+        ├── [especie1]/
+        ├── [especie2]/
+        └── ...
 ```
 
-3. Haz predicciones:
+### 2.2 Organización de Imágenes
 
-```python
-# predict.py ya automatiza la carga de especies y el modelo
-python predict.py
+- Colocar las imágenes de cada especie en su respectiva carpeta dentro de `model/data/`
+- Las imágenes deben estar en formato JPG o PNG
+- Se recomienda tener al menos 50 imágenes por especie para un buen entrenamiento
+
+## 3. Entrenamiento del Modelo
+
+### 3.1 Ejecutar el Entrenamiento
+
+```bash
+python train_model.py
 ```
 
-## Integración con backend
+El script realizará las siguientes acciones:
 
-- Puedes exponer el modelo como un microservicio REST en Python (Flask/FastAPI) y consumirlo desde tu backend Java/Spring Boot.
-- O usar el modelo `.tflite` directamente en aplicaciones móviles.
+1. Organizará el dataset en conjuntos de entrenamiento y validación
+2. Entrenará el modelo de clasificación
+3. Guardará el modelo entrenado en `model/models/`
 
-## Buenas prácticas
+### 3.2 Monitoreo del Entrenamiento
 
-- Mantén tu `.gitignore` actualizado para evitar subir archivos innecesarios.
-- No subas imágenes, modelos entrenados ni entornos virtuales al repositorio.
-- Documenta cualquier cambio importante en el README.
+- El progreso del entrenamiento se mostrará en la consola
+- Se generarán métricas de rendimiento
+- El modelo se guardará automáticamente al finalizar
 
-## Licencia
+## 4. Ejecución de la API Local
 
-Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
+### 4.1 Iniciar el Servidor
+
+```bash
+python api.py
+```
+
+La API estará disponible en:
+
+- URL local: `http://localhost:5000`
+- Endpoint de predicción: `http://localhost:5000/predict`
+
+### 4.2 Conexión con la Aplicación Móvil
+
+1. Asegúrate de que el teléfono y la computadora estén en la misma red WiFi
+2. Obtén la dirección IP local de tu computadora:
+   - Windows: `ipconfig` en CMD
+   - Linux/Mac: `ifconfig` en Terminal
+3. En la aplicación móvil, configura la URL del servidor como:
+   `http://[TU_IP_LOCAL]:5000`
+
+## 5. Solución de Problemas
+
+### 5.1 Errores Comunes
+
+1. **Error de dependencias faltantes**
+
+   ```bash
+   pip install -r requirements.txt --upgrade
+   ```
+
+2. **Error de memoria durante el entrenamiento**
+
+   - Reducir el tamaño del batch en `train_model.py`
+   - Reducir el tamaño de las imágenes
+
+3. **Error de conexión con la API**
+   - Verificar que el firewall no esté bloqueando el puerto 5000
+   - Confirmar que la IP local sea correcta
+
+### 5.2 Logs y Depuración
+
+- Los logs de la API se guardan en `api.log`
+- Para más detalles durante el entrenamiento, revisar la consola
+
+## 6. Mantenimiento
+
+### 6.1 Actualización del Modelo
+
+1. Agregar nuevas imágenes al dataset
+2. Ejecutar nuevamente `train_model.py`
+3. El nuevo modelo reemplazará al anterior
+
+### 6.2 Limpieza de Datos
+
+- Eliminar imágenes de baja calidad
+- Mantener un balance entre especies
+- Verificar la correcta clasificación de las imágenes
+
+## 7. Recursos Adicionales
+
+- [Documentación de TensorFlow](https://www.tensorflow.org/)
+- [Documentación de Flask](https://flask.palletsprojects.com/)
+- [Guía de buenas prácticas en ML](https://developers.google.com/machine-learning/guides/rules-of-ml)
+
+## Contacto y Soporte
+
+Para reportar problemas o solicitar ayuda:
+
+- Crear un issue en el repositorio
+- Contactar al equipo de desarrollo
+
+---
+
+**Nota**: Este manual se actualizará periódicamente. Asegúrate de estar usando la última versión.
